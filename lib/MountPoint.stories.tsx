@@ -10,7 +10,7 @@ export default meta;
 type Story = StoryObj
 
 export const SimplePriority: Story = {
-    render: () => <SwitchableMountProvider>
+    render: () => <SwitchableMountProvider render={() => <span>Mounted content</span>}>
         <p>First item should be mounted.</p>
         <ol>
             <li>
@@ -27,7 +27,7 @@ export const SimplePriority: Story = {
 };
 
 export const OutOfOrderPriority: Story = {
-    render: () => <SwitchableMountProvider>
+    render: () => <SwitchableMountProvider render={() => <span>Mounted content</span>}>
         <p>Second item should be mounted.</p>
         <ol>
             <li>
@@ -44,7 +44,7 @@ export const OutOfOrderPriority: Story = {
 };
 
 export const HightestPriorityCannotShow: Story = {
-    render: () => <SwitchableMountProvider>
+    render: () => <SwitchableMountProvider render={() => <span>Mounted content</span>}>
         <p>Third item should be mounted.</p>
         <ol>
             <li>

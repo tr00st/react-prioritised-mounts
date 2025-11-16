@@ -14,7 +14,8 @@ const MountPoint = ({
     const {
         highestPriorityEntryId,
         registerMountPoint,
-        unregisterMountPoint
+        unregisterMountPoint,
+        renderCallback: RenderCallback
     } = useContext(SwitchableMountContext);
     const isCurrentHighestPriority = mountPointId === highestPriorityEntryId;
     useEffect(() => {
@@ -26,7 +27,7 @@ const MountPoint = ({
         };
     }, [canShow]);
     const show = canShow && isCurrentHighestPriority;
-    return show ? <div>Mounted</div> : null;
+    return show ? <RenderCallback /> : null;
 };
 
 export default MountPoint;

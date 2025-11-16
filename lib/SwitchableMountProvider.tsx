@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import React, { createContext, useState } from "react";
 
 // Todo: Define the mount point reference type.
 type MountPointReference = string;
@@ -8,13 +8,25 @@ type SwitchableMountContextType = {
     // Should be a Map of priority number to target mount point.
     registerMountPoint: (priority: number, mountPoint: MountPointReference) => void;
     unregisterMountPoint: (mountPoint: MountPointReference) => void;
+    renderCallback: () => React.ReactNode;
     highestPriorityEntryId?: MountPointReference;
 };
 
-export const SwitchableMountContext = createContext<SwitchableMountContextType>({});
+export const SwitchableMountContext = createContext<SwitchableMountContextType>({
+    registerMountPoint: () => {
+        throw new Error("SwitchableMountProvider not found");
+    },
+    unregisterMountPoint: () => {
+        throw new Error("SwitchableMountProvider not found");
+    },
+    renderCallback: () => {
+        throw new Error("SwitchableMountProvider not found");
+    }
+});
 
 type SwitchableMountProviderProps = {
-    children: React.ReactNode
+    children: React.ReactNode,
+    render: () => React.ReactNode
 };
 
 type RegisteredComponentEntry = {
@@ -23,7 +35,7 @@ type RegisteredComponentEntry = {
 
 type RegisteredComponentRecord = Record<string, RegisteredComponentEntry>; 
 
-const SwitchableMountProvider = ({ children } : SwitchableMountProviderProps) => {
+const SwitchableMountProvider = ({ children, render } : SwitchableMountProviderProps) => {
     const [registeredComponents, setRegisteredComponents] = useState<RegisteredComponentRecord>({});
 
     const highestPriorityEntry = Object.entries(registeredComponents).reduce<[string, RegisteredComponentEntry] | null>((highest, current) => {
@@ -52,6 +64,7 @@ const SwitchableMountProvider = ({ children } : SwitchableMountProviderProps) =>
                 return newState;
             });
         },
+        renderCallback: render,
         highestPriorityEntryId: highestPriorityEntry ? highestPriorityEntry[0] : undefined
     };
     return <SwitchableMountContext.Provider value={contextValue}>
