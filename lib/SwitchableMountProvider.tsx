@@ -25,7 +25,13 @@ export const SwitchableMountContext = createContext<SwitchableMountContextType>(
 });
 
 type SwitchableMountProviderProps = {
+    /**
+     * The child components which will contain MountPoints. If no MountPoints are registered, the render component will not be displayed.
+     */
     children: React.ReactNode,
+    /**
+     * A function to be used as a component, which will be rendered into the highest priority mount point.
+     */
     render: () => React.ReactNode
 };
 

@@ -3,6 +3,11 @@ import MountPoint from './MountPoint';
 import SwitchableMountProvider from './SwitchableMountProvider';
 
 const meta : Meta<typeof MountPoint> = {
+    component: MountPoint,
+    args: {
+        canShow: true,
+        priority: 1
+    }
 };
 
 export default meta;
