@@ -1,5 +1,5 @@
 import { useContext, useEffect, useId } from "react";
-import { SwitchableMountContext } from "./SwitchableMountProvider";
+import { SwitchableMountContext } from "./SwitchableMountContext";
 
 type MountPointProps = {
     /**
