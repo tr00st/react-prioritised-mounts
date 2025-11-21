@@ -1,5 +1,8 @@
-import React, { useState } from "react";
-import { SwitchableMountContext, type MountPointReference, type SwitchableMountContextType } from "./SwitchableMountContext";
+import React, { useMemo, useState } from "react";
+import { SwitchableMountContext, type MountPointReference, type SwitchableMountContextType, type SwitchableMountRenderMode } from "./SwitchableMountContext";
+import ReversePortalRenderPoint from "./reversePortals/ReversePortalRenderPoint";
+import * as portals from "react-reverse-portal";
+import type { HtmlPortalNode } from "react-reverse-portal";
 
 
 type SwitchableMountProviderProps = {
@@ -11,6 +14,7 @@ type SwitchableMountProviderProps = {
      * A function to be used as a component, which will be rendered into the highest priority mount point.
      */
     render: () => React.ReactNode
+    renderMode?: SwitchableMountRenderMode;
 };
 
 type RegisteredComponentEntry = {
@@ -19,7 +23,7 @@ type RegisteredComponentEntry = {
 
 type RegisteredComponentRecord = Record<string, RegisteredComponentEntry>; 
 
-const SwitchableMountProvider = ({ children, render } : SwitchableMountProviderProps) => {
+const SwitchableMountProvider = ({ children, render, renderMode = "default" } : SwitchableMountProviderProps) => {
     const [registeredComponents, setRegisteredComponents] = useState<RegisteredComponentRecord>({});
 
     const highestPriorityEntry = Object.entries(registeredComponents).reduce<[string, RegisteredComponentEntry] | null>((highest, current) => {
@@ -31,6 +35,14 @@ const SwitchableMountProvider = ({ children, render } : SwitchableMountProviderP
         }
         return highest;
     }, null);
+
+    const reversePortalNode : HtmlPortalNode | undefined = useMemo(() => {
+        if (renderMode === "reverse-portal") {
+            return portals.createHtmlPortalNode();
+        } else {
+            return undefined;
+        }
+    }, [renderMode]);
 
     const contextValue : SwitchableMountContextType = {
         registerMountPoint: (priority: number, mountPoint: MountPointReference) => {
@@ -49,9 +61,13 @@ const SwitchableMountProvider = ({ children, render } : SwitchableMountProviderP
             });
         },
         renderCallback: render,
-        highestPriorityEntryId: highestPriorityEntry ? highestPriorityEntry[0] : undefined
+        highestPriorityEntryId: highestPriorityEntry ? highestPriorityEntry[0] : undefined,
+        renderMode: renderMode,
+        reversePortalNode: reversePortalNode
     };
+
     return <SwitchableMountContext.Provider value={contextValue}>
+        {renderMode === "reverse-portal" && <ReversePortalRenderPoint renderFunc={render} portalNode={reversePortalNode} />}
         { children }
     </SwitchableMountContext.Provider>
 };

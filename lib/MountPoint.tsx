@@ -1,5 +1,6 @@
 import { useContext, useEffect, useId } from "react";
 import { SwitchableMountContext } from "./SwitchableMountContext";
+import ReversePortalMountPoint from "./reversePortals/ReversePortalMountPoint";
 
 type MountPointProps = {
     /**
@@ -22,7 +23,8 @@ const MountPoint = ({
         highestPriorityEntryId,
         registerMountPoint,
         unregisterMountPoint,
-        renderCallback: RenderCallback
+        renderCallback: RenderCallback,
+        renderMode
     } = useContext(SwitchableMountContext);
     const isCurrentHighestPriority = mountPointId === highestPriorityEntryId;
     useEffect(() => {
@@ -34,7 +36,13 @@ const MountPoint = ({
         };
     }, [canShow]);
     const show = canShow && isCurrentHighestPriority;
-    return show ? <RenderCallback /> : null;
+    if (!show) {
+        return null;
+    } else if (renderMode === "reverse-portal") {
+        return <ReversePortalMountPoint />;
+    } else {
+        return <RenderCallback />;
+    }
 };
 
 export default MountPoint;

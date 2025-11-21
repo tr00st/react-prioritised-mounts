@@ -64,3 +64,21 @@ export const HightestPriorityCannotShow: Story = {
         </ol>
     </SwitchableMountProvider>
 };
+
+
+export const ReversePortal: Story = {
+    render: () => <SwitchableMountProvider render={() => <span>Mounted content</span>} renderMode='reverse-portal'>
+        <p>First item should be mounted.</p>
+        <ol>
+            <li>
+                <MountPoint canShow={true} priority={1} />
+            </li>
+            <li>
+                <MountPoint canShow={true} priority={2} />
+            </li>
+            <li>
+                <MountPoint canShow={true} priority={3} />
+            </li>
+        </ol>
+    </SwitchableMountProvider>
+};
