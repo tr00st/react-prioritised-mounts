@@ -34,6 +34,12 @@ const MountPoint = ({
         return () => {
             unregisterMountPoint(mountPointId);
         };
+        // We intentionally only depend on canShow to avoid infinite loops. The registerMountPoint
+        // and unregisterMountPoint functions are created on every provider render, so including them
+        // as dependencies would cause the effect to run on every render. The mountPointId is stable
+        // (from useId), and priority changes don't require re-registration - the provider will still
+        // see the updated priority from the closure when it reads the component's current state.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [canShow]);
     const show = canShow && isCurrentHighestPriority;
     if (!show) {
