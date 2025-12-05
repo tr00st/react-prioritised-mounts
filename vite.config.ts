@@ -13,6 +13,9 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(dirname, 'lib/index.ts'),
+      name: 'ReactPrioritisedMounts',
+      formats: ['es', 'cjs'],
+      fileName: (format) => `react-prioritised-mounts.${format === 'es' ? 'mjs' : 'cjs'}`
     }
   },
   test: {

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import SwitchableMountProvider from './SwitchableMountProvider';
 import MountPoint from './MountPoint';
 import type { SwitchableMountRenderMode } from './SwitchableMountContext';
