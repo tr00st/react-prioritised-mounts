@@ -7,13 +7,23 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "build": "tsc -b && vite build",
+    "build": "tsc -p tsconfig.build.json && vite build",
     "lint": "eslint .",
     "start": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:ui": "vitest --ui"
+  },
+  "main": "dist/react-prioritised-mounts.cjs",
+  "module": "dist/react-prioritised-mounts.mjs",
+  "types": "dist/types/index.d.ts",
+  "files": [
+    "dist",
+    "dist/types"
+  ],
+  "publishConfig": {
+    "access": "public"
   },
   "peerDependencies": {
     "react": ">=19.1.1",

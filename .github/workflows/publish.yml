@@ -1,0 +1,53 @@
+name: Publish
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build package
+        run: npm run build
+
+      - name: Create tarball
+        run: npm pack --pack-destination ./pack
+
+      - name: Smoke test packed tarball
+        run: |
+          set -e
+          mkdir smoke-test
+          pushd smoke-test
+          npm init -y >/dev/null
+          # Install peer deps and the packed tarball
+          npm install react react-dom >/dev/null
+          TAR=$(ls ../pack/*.tgz | head -n1)
+          npm install "$TAR" >/dev/null
+          node -e "const pkg=require('react-prioritised-mounts'); if(!pkg.SwitchableMountProvider) { console.error('missing export SwitchableMountProvider'); process.exit(2); } console.log('smoke ok');"
+          popd
+
+      - name: Publish to npm
+        if: success()
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Publish
+        if: success()
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          npm publish --access public ./pack/*.tgz
