@@ -48,7 +48,7 @@ export const OutOfOrderPriority: Story = {
     </SwitchableMountProvider>
 };
 
-export const HightestPriorityCannotShow: Story = {
+export const HighestPriorityCannotShow: Story = {
     render: () => <SwitchableMountProvider render={() => <span>Mounted content</span>}>
         <p>Third item should be mounted.</p>
         <ol>
