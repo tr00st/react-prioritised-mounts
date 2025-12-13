@@ -20,7 +20,7 @@ See the Storybook stories (`lib/*.stories.tsx`) for more examples.
 ## Install
 
 ```
-npm install react-prioritised-mounts
+npm install @tr00st/react-prioritised-mounts
 npm install react-reverse-portal # Optional
 ```
 
