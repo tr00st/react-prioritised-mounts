@@ -1,6 +1,7 @@
 /// <reference types="vitest/config" />
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
+import { externalizeDeps } from 'vite-plugin-externalize-deps'
 
 // https://vite.dev/config/
 import path, { resolve } from 'node:path';
@@ -9,7 +10,10 @@ const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(file
 
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    externalizeDeps()
+  ],
   build: {
     lib: {
       entry: resolve(dirname, 'lib/index.ts'),
