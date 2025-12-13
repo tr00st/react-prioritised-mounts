@@ -45,6 +45,46 @@ npm install react-reverse-portal # Optional
 </SwitchableMountProvider>
 ```
 
+## Developing
+
+### Requirements
+
+You'll need:
+* NVM
+* Node LTS (last update - v24.x)
+
+If you're developing on Windows, consider using WSL2, and your choice of distro (eg: Ubuntu LTS).
+
+To get set up, check the repo out and run the following:
+
+```bash
+# Install NVM
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+
+# Enable NVM on current terminal
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Install latest LTS
+nvm install --lts
+
+# Switch to the LTS (only for the current terminal!)
+nvm use lts/*
+
+# Install dependencies
+npm install
+```
+
+### Iterating locally
+
+Whilst making changes, you'll probably want to run:
+
+* Storybook for a visual confirmation, and creating examples
+* Vitest for unit tests/quick feedback if you break anything
+
+Recommendation is to use `npm run dev`, which starts both with web UIs, and should auto-launch a tab for each.
+
 # Limitations
 
 Current limitations (think of this as the development to-do list...)

@@ -9,11 +9,12 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json && vite build",
     "lint": "eslint .",
-    "start": "storybook dev -p 6006",
+    "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui --watch",
+    "dev": "concurrently --names storybook,vitest 'npm run storybook' 'npm run test:ui'"
   },
   "main": "dist/react-prioritised-mounts.cjs",
   "module": "dist/react-prioritised-mounts.mjs",
@@ -46,6 +47,8 @@
     "@vitest/browser": "^4.0.2",
     "@vitest/browser-playwright": "4.0.3",
     "@vitest/coverage-v8": "^4.0.2",
+    "@vitest/ui": "^4.0.3",
+    "concurrently": "^9.2.1",
     "eslint": "^9.36.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.22",
